@@ -1,0 +1,118 @@
+{
+  "model": "AngelSlim/Hy3-GGUF",
+  "artifact": "Hy3-IQ1_M-mtp.gguf",
+  "artifact_bytes": 91756066624,
+  "host": "DGX Spark GB10 (unified ~121 Gi RAM)",
+  "runtime": "AngelSlim patched llama.cpp (commit 19bba67c1 + hy_v3 MTP patches), CUDA",
+  "date": "2026-07-14",
+  "port": 8088,
+  "best_config": {
+    "ctx_size": 100000,
+    "parallel": 1,
+    "n_gpu_layers": 999,
+    "flash_attn": "on",
+    "cache_type_k": "q4_0",
+    "cache_type_v": "q4_0",
+    "spec_type": "draft-mtp",
+    "spec_draft_n_max": 2,
+    "spec_draft_n_min": 1,
+    "spec_draft_p_min": 0.6,
+    "cache_type_k_draft": "q4_0",
+    "cache_type_v_draft": "q4_0"
+  },
+  "concurrent": {
+    "levels_attempted": [1],
+    "levels_stable": [1],
+    "levels_failed": [],
+    "note": "Only --parallel 1 was validated. 4/10 concurrent multi-slot not claimed."
+  },
+  "headline": {
+    "warm_freeform_decode_tok_s": 18.7,
+    "structured_code_decode_tok_s": 27.0,
+    "structured_json_decode_tok_s": 29.0,
+    "no_mtp_baseline_tok_s": 14.5,
+    "freeform_30_plus_achieved": false
+  },
+  "runs": [
+    {
+      "id": "t1-4k-nomtp",
+      "config": "ctx=4096 parallel=1 no MTP KV=q4",
+      "host_used_gi": 90,
+      "prose_decode_tok_s": 14.8,
+      "notes": "Coherent; quiet idle load"
+    },
+    {
+      "id": "t2-100k-mtp-nmax3-pmin0",
+      "config": "ctx=100000 MTP n_max=3 p_min=0 KV=q4",
+      "host_used_gi": 109,
+      "gpu_process_mib": 106460,
+      "prose_decode_tok_s": 15.4,
+      "long_prose_decode_tok_s": 16.2,
+      "draft_accept_freeform": 0.28,
+      "code_decode_tok_s": 26.0,
+      "json_decode_tok_s": 33.0,
+      "draft_accept_json": 0.89
+    },
+    {
+      "id": "t4a-100k-mtp-nmax2-pmin0",
+      "config": "ctx=100000 MTP n_max=2 p_min=0 KV=q4",
+      "prose_decode_tok_s": 17.8,
+      "code_decode_tok_s": 27.8,
+      "json_decode_tok_s": 29.7,
+      "draft_accept_prose": 0.375,
+      "draft_accept_code": 0.846,
+      "draft_accept_json": 0.938
+    },
+    {
+      "id": "longfill-20k",
+      "config": "ctx=100000 MTP n_max=2 p_min=0, ~20020 prompt tokens",
+      "prompt_eval_tok_s": 296.6,
+      "decode_tok_s": 11.2,
+      "draft_accept": 0.433,
+      "stable": true
+    },
+    {
+      "id": "t4b-32k-q8kv",
+      "config": "ctx=32768 MTP n_max=2 KV=q8_0",
+      "host_used_gi": 101,
+      "prose_decode_tok_s": 16.7,
+      "code_decode_tok_s": 27.9,
+      "json_decode_tok_s": 29.7,
+      "notes": "q8 KV did not improve freeform vs q4"
+    },
+    {
+      "id": "t4c-100k-nomtp",
+      "config": "ctx=100000 no MTP KV=q4",
+      "host_used_gi": 99,
+      "prose_decode_tok_s": 14.6,
+      "code_decode_tok_s": 14.7,
+      "json_decode_tok_s": 15.1
+    },
+    {
+      "id": "t4d-100k-mtp-nmax3-pmin06",
+      "config": "ctx=100000 MTP n_max=3 p_min=0.6 KV=q4",
+      "prose_decode_tok_s": 18.8,
+      "code_decode_tok_s": 27.2,
+      "json_decode_tok_s": 29.8,
+      "draft_accept_prose": 0.824,
+      "draft_accept_code": 0.92,
+      "draft_accept_json": 1.0
+    },
+    {
+      "id": "t4e-100k-mtp-nmax2-pmin06-BEST",
+      "config": "ctx=100000 MTP n_max=2 p_min=0.6 KV=q4",
+      "host_used_gi": 109,
+      "gpu_process_mib": 106460,
+      "prose_decode_tok_s": 19.0,
+      "code_decode_tok_s": 26.8,
+      "json_decode_tok_s": 29.0,
+      "long_prose_decode_tok_s": 18.65,
+      "draft_accept_prose": 0.824,
+      "draft_accept_code": 0.915,
+      "draft_accept_json": 1.0,
+      "draft_accept_long_prose": 0.70,
+      "package_default": true
+    }
+  ],
+  "publish_bar_notes": "Not a 40-50 freeform tok/s recipe. Shipped as capacity + coherent Hy3-on-Spark with honest MTP knobs. Concurrent 10 not achieved/claimed."
+}

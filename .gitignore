@@ -1,0 +1,9 @@
+# large weights / local build trees
+*.gguf
+**/llama.cpp-hyv3/
+.cache/
+__pycache__/
+*.log
+*.incomplete
+.env
+.DS_Store
