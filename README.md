@@ -4,6 +4,13 @@ Ready-to-run **deployment package** for [AngelSlim/Hy3-GGUF](https://huggingface
 
 This is **not** new weights. It is a measured host recipe: patched `llama.cpp` (hy_v3 + MTP), download steps, serve flags, and honest numbers from a live GB10 box.
 
+## Benchmark visualization
+
+[![Publication-style benchmark summary](figures/benchmark-summary.png)](figures/benchmark-summary.pdf)
+
+The figure is generated from this repository's measured results with [`figures/plot_benchmarks.py`](figures/plot_benchmarks.py), following the publication-figure conventions from [figures4papers](https://github.com/ChenLiu-1996/figures4papers). The PNG is optimized for GitHub; click it for the vector PDF.
+
+
 ## What this is (and is not)
 
 | Claim | Status |
